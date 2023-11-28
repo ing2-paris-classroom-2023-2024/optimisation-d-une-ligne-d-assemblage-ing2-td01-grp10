@@ -48,7 +48,12 @@ int couleur_presente(int* stations, int couleur, int nombre_operations) {
     return 0;  // Couleur disponible
 }
 
-
+// Fonction de comparaison pour le tri en fonction des contraintes de précédence
+int comparaison_precedence(const void* a, const void* b) {
+    const t_precedence* prec_a = (const t_precedence*)a;
+    const t_precedence* prec_b = (const t_precedence*)b;
+    return prec_a->precedences[1] - prec_b->precedences[1];
+}
 
 int main() {
     Donnees donnees = lire_donnees();
