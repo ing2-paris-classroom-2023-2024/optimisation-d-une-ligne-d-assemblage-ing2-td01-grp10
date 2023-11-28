@@ -35,6 +35,8 @@ Donnees lire_donnees();
 int couleur_presente(int* stations, int couleur, int nombre_operations);
 int comparaison_precedence(const void* a, const void* b);
 void trier_operations(Donnees* donnees, int* operations_triees);
+void assigner_stations(Donnees* donnees);
+
 
 
 

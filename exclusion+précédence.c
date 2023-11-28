@@ -76,6 +76,58 @@ void trier_operations(Donnees* donnees, int* operations_triees) {
     free(prec_temp);
 }
 
+// Fonction pour attribuer des stations aux opérations
+void assigner_stations(Donnees* donnees) {
+    // Création d'une liste des opérations triées par précédence
+    int* operations_triees = (int*)malloc(sizeof(int) * donnees->nombre_operations);
+
+    // Initialisation des stations
+    int* stations = (int*)malloc(sizeof(int) * donnees->nombre_operations);
+
+    // Tri des opérations par précédence
+    trier_operations(donnees, operations_triees);
+
+    // Boucle sur les opérations triées
+    for (int i = 0; i < donnees->nombre_operations; i++) {
+        int op = operations_triees[i];
+        int couleur_interdite = 0;
+
+        // Logique pour déterminer la couleur interdite en fonction des contraintes d'exclusion
+        for (int j = 0; j < donnees->nombre_exclusions; j++) {
+            if (donnees->exclusions[j].exclusion[0] == op || donnees->exclusions[j].exclusion[1] == op) {
+                int autre_op;
+
+                if (donnees->exclusions[j].exclusion[0] == op) {
+                    autre_op = donnees->exclusions[j].exclusion[1];
+                } else {
+                    autre_op = donnees->exclusions[j].exclusion[0];
+                }
+                couleur_interdite = stations[autre_op];
+                break;
+            }
+        }
+
+        // Trouver la première couleur disponible
+        int couleur = 1;
+        while (couleur_presente(stations, couleur, donnees->nombre_operations) || couleur <= couleur_interdite) {
+            couleur++;
+        }
+
+        // Affectation de l'opération à la station
+        stations[op] = couleur;
+
+        // Affichage des résultats (à des fins de test)
+        printf("Opération %d : Station %d\n", op, couleur);
+    }
+
+    // Affichage du nombre total de stations
+    printf("Nombre total de stations : %d\n", couleur_presente(stations, 0, donnees->nombre_operations));
+
+    // Libération de la mémoire
+    free(operations_triees);
+    free(stations);
+}
+
 int main() {
     Donnees donnees = lire_donnees();
 
