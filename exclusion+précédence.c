@@ -55,6 +55,27 @@ int comparaison_precedence(const void* a, const void* b) {
     return prec_a->precedences[1] - prec_b->precedences[1];
 }
 
+
+// Fonction pour trier les opérations en fonction des contraintes de précédence
+void trier_operations(Donnees* donnees, int* operations_triees) {
+    // Copie des contraintes de précédence dans un tableau temporaire
+    t_precedence* prec_temp = malloc(sizeof(t_precedence) * donnees->nombre_precedences);
+    for (int i = 0; i < donnees->nombre_precedences; i++) {
+        prec_temp[i] = donnees->precedences[i];
+    }
+
+    // Trier le tableau temporaire en fonction des contraintes de précédence
+    qsort(prec_temp, donnees->nombre_precedences, sizeof(t_precedence), comparaison_precedence);
+
+    // Remplir le tableau d'opérations triées en suivant l'ordre de tri des contraintes de précédence
+    for (int i = 0; i < donnees->nombre_precedences; i++) {
+        operations_triees[i] = prec_temp[i].precedences[0];
+    }
+
+    // Libération de la mémoire
+    free(prec_temp);
+}
+
 int main() {
     Donnees donnees = lire_donnees();
 
