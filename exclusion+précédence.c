@@ -38,6 +38,18 @@ Donnees lire_donnees() {
     return donnees;
 }
 
+// Fonction pour déterminer si une couleur est déjà utilisée
+int couleur_presente(int* stations, int couleur, int nombre_operations) {
+    for (int i = 0; i < nombre_operations; i++) {
+        if (stations[i] == couleur) {
+            return 1;  // Couleur déjà utilisée
+        }
+    }
+    return 0;  // Couleur disponible
+}
+
+
+
 int main() {
     Donnees donnees = lire_donnees();
 

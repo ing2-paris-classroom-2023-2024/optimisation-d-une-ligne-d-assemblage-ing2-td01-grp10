@@ -32,6 +32,8 @@ typedef struct {
 } Donnees;
 
 Donnees lire_donnees();
+int couleur_presente(int* stations, int couleur, int nombre_operations);
+
 
 
 #endif //OPTIMISATION_D_UNE_LIGNE_D_ASSEMBLAGE_ING2_TD01_GRP10_EXCLUSION_PRÉCÉDENCE_H
