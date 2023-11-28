@@ -131,12 +131,13 @@ void assigner_stations(Donnees* donnees) {
 int main() {
     Donnees donnees = lire_donnees();
 
-    // Utilisez les données comme nécessaire
-    // Par exemple, donnees.exclusions, donnees.precedences, etc.
+    // Exécution de l'algorithme
+    assigner_stations(&donnees);
 
-    // N'oubliez pas de libérer la mémoire à la fin
+    // Libération de la mémoire à la fin
     free(donnees.exclusions);
-    // Libérez la mémoire pour les autres structures...
+    free(donnees.precedences);
+    free(donnees.operations);
 
     return 0;
 }
