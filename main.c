@@ -1,18 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "exclusionprecedence.h"
+
 
 int main() {
-    // Déclaration d'une variable pour stocker le nom de l'utilisateur
-    char nom[50];
+    Donnees donnees = lire_donnees();
 
-    // Demander à l'utilisateur d'entrer son nom
-    printf("Entrez votre nom : ");
+    // Exécution de l'algorithme
+    assigner_stations(&donnees);
 
-    // Lire le nom de l'utilisateur depuis la console
-    scanf("%s", nom);
+    // Libération de la mémoire à la fin
+    free(donnees.exclusions);
+    free(donnees.precedences);
+    free(donnees.operations);
 
-    // Afficher un message de salutation avec le nom de l'utilisateur
-    printf("Bonjour, %s !\n", nom);
-
-    // Indiquer que le programme s'est exécuté avec succès
     return 0;
 }
+
