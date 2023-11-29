@@ -1,6 +1,3 @@
-//
-// Created by loryi on 28/11/2023.
-//
 
 #include "exclusionprecedence.h"
 #include <stdio.h>
