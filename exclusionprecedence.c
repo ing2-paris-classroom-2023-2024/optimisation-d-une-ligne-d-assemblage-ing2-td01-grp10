@@ -87,18 +87,58 @@ void dfs(int** graphe, int sommet, int* visite, int nombre_operations, int* stat
     }
 }
 
+// Fonction pour minimiser le nombre de stations en respectant les contraintes
+void minimiser_stations(t_donnees* donnees, int** graphe) {
+    int* visite = (int*)malloc(sizeof(int) * donnees->nombre_operations);
+    int* stations = (int*)malloc(sizeof(int) * donnees->nombre_operations);
 
+    // Initialiser les tableaux
+    for (int i = 0; i < donnees->nombre_operations; i++) {
+        visite[i] = 0;
+        stations[i] = 0;
+    }
+
+    int station_actuelle = 0;
+
+    // Parcourir le graphe avec DFS
+    for (int i = 0; i < donnees->nombre_operations; i++) {
+        if (!visite[i]) {
+            stations[i] = station_actuelle;
+            dfs(graphe, i, visite, donnees->nombre_operations, stations, station_actuelle);
+            station_actuelle++;
+        }
+    }
+
+    // Afficher le résultat
+    printf("Nombre de stations minimales : %d\n", station_actuelle);
+
+    // Libérer la mémoire
+    free(visite);
+    free(stations);
+}
 
 int main() {
-    Donnees donnees = lire_donnees();
+    t_donnees donnees = lire_donnees();
 
-    // Exécution de l'algorithme
-    assigner_stations(&donnees);
+    // Créer le graphe
+    int** graphe = (int**)malloc(sizeof(int*) * donnees.nombre_operations);
+    for (int i = 0; i < donnees.nombre_operations; i++) {
+        graphe[i] = (int*)malloc(sizeof(int) * donnees.nombre_operations);
+    }
+
+    creer_graphe(&donnees, graphe);
+
+    // Minimiser le nombre de stations
+    minimiser_stations(&donnees, graphe);
 
     // Libération de la mémoire à la fin
+    for (int i = 0; i < donnees.nombre_operations; i++) {
+        free(graphe[i]);
+    }
+    free(graphe);
+
     free(donnees.exclusions);
     free(donnees.precedences);
-    free(donnees.operations);
 
     return 0;
 }
