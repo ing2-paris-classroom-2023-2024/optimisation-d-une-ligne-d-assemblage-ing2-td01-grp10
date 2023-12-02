@@ -117,28 +117,3 @@ void minimiser_stations(t_donnees* donnees, int** graphe) {
     free(stations);
 }
 
-int main() {
-    t_donnees donnees = lire_donnees();
-
-    // Créer le graphe
-    int** graphe = (int**)malloc(sizeof(int*) * donnees.nombre_operations);
-    for (int i = 0; i < donnees.nombre_operations; i++) {
-        graphe[i] = (int*)malloc(sizeof(int) * donnees.nombre_operations);
-    }
-
-    creer_graphe(&donnees, graphe);
-
-    // Minimiser le nombre de stations
-    minimiser_stations(&donnees, graphe);
-
-    // Libération de la mémoire à la fin
-    for (int i = 0; i < donnees.nombre_operations; i++) {
-        free(graphe[i]);
-    }
-    free(graphe);
-
-    free(donnees.exclusions);
-    free(donnees.precedences);
-
-    return 0;
-}

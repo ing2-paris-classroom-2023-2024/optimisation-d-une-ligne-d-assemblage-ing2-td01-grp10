@@ -103,15 +103,27 @@ Graphe * lire_graphe(char * nomFichier)
 }
 
 int main() {
-    Donnees donnees = lire_donnees();
+    t_donnees donnees = lire_donnees();
 
-    // Exécution de l'algorithme
-    assigner_stations(&donnees);
+    // Créer le graphe
+    int** graphe = (int**)malloc(sizeof(int*) * donnees.nombre_operations);
+    for (int i = 0; i < donnees.nombre_operations; i++) {
+        graphe[i] = (int*)malloc(sizeof(int) * donnees.nombre_operations);
+    }
+
+    creer_graphe(&donnees, graphe);
+
+    // Minimiser le nombre de stations
+    minimiser_stations(&donnees, graphe);
 
     // Libération de la mémoire à la fin
+    for (int i = 0; i < donnees.nombre_operations; i++) {
+        free(graphe[i]);
+    }
+    free(graphe);
+
     free(donnees.exclusions);
     free(donnees.precedences);
-    free(donnees.operations);
 
     return 0;
 }
