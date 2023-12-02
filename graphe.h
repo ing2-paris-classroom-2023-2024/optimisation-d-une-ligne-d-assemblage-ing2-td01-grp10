@@ -17,8 +17,6 @@ struct Sommet
     struct Arc* arc;
     int valeur;
     int couleur;
-    int predecesseur;
-    int dist;
     int degre;
 };
 
@@ -42,7 +40,7 @@ Le fichier contient : ordre, taille,orientation (0 ou 1)et liste des arcs */
 Graphe * lire_graphe(char * nomFichier);
 
 // Ajouter l'arête entre les sommets s1 et s2 du graphe
-pSommet* CreerArete(pSommet* sommet,int s1,int s2, int poids);
+pSommet* CreerArete(pSommet* sommet,int s1,int s2);
 
 /* affichage des successeurs du sommet num*/
 void afficher_successeurs(pSommet * sommet, int num);
