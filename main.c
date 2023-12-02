@@ -105,7 +105,7 @@ Graphe * lire_graphe(char * nomFichier)
 int main() {
     t_donnees donnees = lire_donnees();
 
-    // Créer le graphe
+    // Création du graphe
     int** graphe = (int**)malloc(sizeof(int*) * donnees.nombre_operations);
     for (int i = 0; i < donnees.nombre_operations; i++) {
         graphe[i] = (int*)malloc(sizeof(int) * donnees.nombre_operations);
@@ -114,7 +114,7 @@ int main() {
     creer_graphe(&donnees, graphe);
 
     // Minimiser le nombre de stations
-    minimiser_stations(&donnees, graphe);
+    min_stations(&donnees, graphe);
 
     // Libération de la mémoire à la fin
     for (int i = 0; i < donnees.nombre_operations; i++) {

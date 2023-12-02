@@ -74,7 +74,7 @@ void creer_graphe(t_donnees* donnees, int** graphe) {
 
 
 
-// Fonction auxiliaire pour le parcours DFS du graphe
+// Utilisation du DFS pour le parcours du graphe
 void dfs(int** graphe, int sommet, int* visite, int nombre_operations, int* stations, int station_actuelle) {
     visite[sommet] = 1; // Marquer le sommet comme visité
 
@@ -88,7 +88,7 @@ void dfs(int** graphe, int sommet, int* visite, int nombre_operations, int* stat
 }
 
 // Fonction pour minimiser le nombre de stations en respectant les contraintes
-void minimiser_stations(t_donnees* donnees, int** graphe) {
+void min_stations(t_donnees* donnees, int** graphe) {
     int* visite = (int*)malloc(sizeof(int) * donnees->nombre_operations);
     int* stations = (int*)malloc(sizeof(int) * donnees->nombre_operations);
 
