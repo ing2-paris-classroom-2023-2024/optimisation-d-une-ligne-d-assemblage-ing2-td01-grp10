@@ -4,34 +4,48 @@
 #include <stdlib.h>
 
 // Fonction pour lire les données depuis les fichiers
-Donnees lire_donnees() {
-    Donnees donnees;
+t_donnees lire_donnees() {
+    t_donnees donnees;
 
     // Lecture du fichier exclusions.txt
-    FILE *file = fopen("exclusions.txt", "r");
-    if (!file) {
+    FILE *exclusion = fopen("exclusions.txt", "r");
+    if (!exclusion) {
         perror("Erreur lors de l'ouverture du fichier exclusions.txt");
         exit(EXIT_FAILURE);
     }
 
-    // Allocation dynamique pour les exclusions
-    donnees.exclusions = NULL;
-    donnees.nombre_exclusions = 0;
+    // Lire les données depuis le fichier exclusions.txt
+    FILE* fichier_exclusions = fopen("exclusions.txt", "r");
+    fscanf(fichier_exclusions, "%d", &donnees.nombre_exclusions);
 
-    while (fscanf(file, "%d %d", &donnees.exclusions[donnees.nombre_exclusions].exclusion[0],
-                  &donnees.exclusions[donnees.nombre_exclusions].exclusion[1]) == 2) {
-        donnees.nombre_exclusions++;
+    donnees.exclusions = (t_exclusion*)malloc(sizeof(t_exclusion) * donnees.nombre_exclusions);
+    for (int i = 0; i < donnees.nombre_exclusions; i++) {
+        fscanf(fichier_exclusions, "%d %d", &donnees.exclusions[i].exclusion[0], &donnees.exclusions[i].exclusion[1]);
+    }
+    fclose(fichier_exclusions);
 
-        // Réallouer de la mémoire pour les exclusions
-        donnees.exclusions = realloc(donnees.exclusions, sizeof(t_exclusion) * (donnees.nombre_exclusions + 1));
+    fclose(exclusion);
+
+    // Lecture du fichier precedence.txt
+    FILE *precedence = fopen("precedence.txt", "r");
+    if (!precedence) {
+        perror("Erreur lors de l'ouverture du fichier precedence.txt");
+        exit(EXIT_FAILURE);
     }
 
-    fclose(file);
+    // Lire les données depuis le fichier precedences.txt
+    FILE* fichier_precedences = fopen("precedences.txt", "r");
+    fscanf(fichier_precedences, "%d", &donnees.nombre_precedences);
 
-    // Faites de même pour les fichiers precedences.txt et operations.txt...
+    donnees.precedences = (t_precedence*)malloc(sizeof(t_precedence) * donnees.nombre_precedences);
+    for (int i = 0; i < donnees.nombre_precedences; i++) {
+        fscanf(fichier_precedences, "%d %d", &donnees.precedences[i].precedences[0], &donnees.precedences[i].precedences[1]);
+    }
+    fclose(fichier_precedences);
 
     return donnees;
 }
+
 
 // Fonction pour déterminer si une couleur est déjà utilisée
 int couleur_presente(int* stations, int couleur, int nombre_operations) {

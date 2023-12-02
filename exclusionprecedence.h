@@ -6,12 +6,6 @@
 #define OPTIMISATION_D_UNE_LIGNE_D_ASSEMBLAGE_ING2_TD01_GRP10_EXCLUSIONPRECEDENCE_H
 
 
-// Structure pour stocker les données d'une opération
-typedef struct {
-    int operation;
-    int temps_execution;
-} t_operation;
-
 // Structure pour stocker les contraintes d'exclusion
 typedef struct {
     int exclusion[2];
@@ -26,18 +20,12 @@ typedef struct {
 typedef struct {
     t_exclusion* exclusions;
     t_precedence* precedences;
-    t_operation* operations;
-    int temps_cycle;
     int nombre_operations;
     int nombre_exclusions;
     int nombre_precedences;
-} Donnees;
+} t_donnees;
 
-Donnees lire_donnees();
-int couleur_presente(int* stations, int couleur, int nombre_operations);
-int comparaison_precedence(const void* a, const void* b);
-void trier_operations(Donnees* donnees, int* operations_triees);
-void assigner_stations(Donnees* donnees);
+t_donnees lire_donnees();
 
 
 
