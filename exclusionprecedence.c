@@ -47,26 +47,33 @@ t_donnees lire_donnees() {
 }
 
 
-// Fonction pour déterminer si une couleur est déjà utilisée
-int couleur_presente(int* stations, int couleur, int nombre_operations) {
-    for (int i = 0; i < nombre_operations; i++) {
-        if (stations[i] == couleur) {
-            return 1;  // Couleur déjà utilisée
+// Fonction pour créer un graphe orienté en tenant compte des contraintes d'exclusion
+void creer_graphe(t_donnees* donnees, int** graphe) {
+    // Initialiser le graphe avec des zéros (pas d'arcs)
+    for (int i = 0; i < donnees->nombre_operations; i++) {
+        for (int j = 0; j < donnees->nombre_operations; j++) {
+            graphe[i][j] = 0;
         }
     }
-    return 0;  // Couleur disponible
-}
 
-// Fonction de comparaison pour le tri en fonction des contraintes de précédence
-int comparaison_precedence(const void* a, const void* b) {
-    const t_precedence* prec_a = (const t_precedence*)a;
-    const t_precedence* prec_b = (const t_precedence*)b;
-    return prec_a->precedences[1] - prec_b->precedences[1];
-}
+    // Remplir le graphe avec les arcs de précédence
+    for (int i = 0; i < donnees->nombre_precedences; i++) {
+        int operande1 = donnees->precedences[i].precedences[0];
+        int operande2 = donnees->precedences[i].precedences[1];
+        graphe[operande1][operande2] = 1;
+    }
 
+    // Exclure les arêtes entre les opérations mutuellement exclues
+    for (int i = 0; i < donnees->nombre_exclusions; i++) {
+        int op1 = donnees->exclusions[i].exclusion[0];
+        int op2 = donnees->exclusions[i].exclusion[1];
+        graphe[op1][op2] = 0;
+        graphe[op2][op1] = 0;
+    }
+}
 
 // Fonction pour trier les opérations en fonction des contraintes de précédence
-void trier_operations(Donnees* donnees, int* operations_triees) {
+void trier_operations(t_donnees* donnees, int* operations_triees) {
     // Copie des contraintes de précédence dans un tableau temporaire
     t_precedence* prec_temp = malloc(sizeof(t_precedence) * donnees->nombre_precedences);
     for (int i = 0; i < donnees->nombre_precedences; i++) {

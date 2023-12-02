@@ -26,6 +26,8 @@ typedef struct {
 } t_donnees;
 
 t_donnees lire_donnees();
+void creer_graphe(t_donnees* donnees, int** graphe);
+
 
 
 
