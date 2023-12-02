@@ -72,77 +72,22 @@ void creer_graphe(t_donnees* donnees, int** graphe) {
     }
 }
 
-// Fonction pour trier les opérations en fonction des contraintes de précédence
-void trier_operations(t_donnees* donnees, int* operations_triees) {
-    // Copie des contraintes de précédence dans un tableau temporaire
-    t_precedence* prec_temp = malloc(sizeof(t_precedence) * donnees->nombre_precedences);
-    for (int i = 0; i < donnees->nombre_precedences; i++) {
-        prec_temp[i] = donnees->precedences[i];
+
+
+// Fonction auxiliaire pour le parcours DFS du graphe
+void dfs(int** graphe, int sommet, int* visite, int nombre_operations, int* stations, int station_actuelle) {
+    visite[sommet] = 1; // Marquer le sommet comme visité
+
+    // Si le sommet a des voisins non visités, incrémente le nombre de stations
+    for (int i = 0; i < nombre_operations; i++) {
+        if (graphe[sommet][i] == 1 && !visite[i]) {
+            stations[i] = station_actuelle;
+            dfs(graphe, i, visite, nombre_operations, stations, station_actuelle + 1);
+        }
     }
-
-    // Trier le tableau temporaire en fonction des contraintes de précédence
-    qsort(prec_temp, donnees->nombre_precedences, sizeof(t_precedence), comparaison_precedence);
-
-    // Remplir le tableau d'opérations triées en suivant l'ordre de tri des contraintes de précédence
-    for (int i = 0; i < donnees->nombre_precedences; i++) {
-        operations_triees[i] = prec_temp[i].precedences[0];
-    }
-
-    // Libération de la mémoire
-    free(prec_temp);
 }
 
-// Fonction pour attribuer des stations aux opérations
-void assigner_stations(Donnees* donnees) {
-    // Création d'une liste des opérations triées par précédence
-    int* operations_triees = (int*)malloc(sizeof(int) * donnees->nombre_operations);
 
-    // Initialisation des stations
-    int* stations = (int*)malloc(sizeof(int) * donnees->nombre_operations);
-
-    // Tri des opérations par précédence
-    trier_operations(donnees, operations_triees);
-
-    // Boucle sur les opérations triées
-    for (int i = 0; i < donnees->nombre_operations; i++) {
-        int op = operations_triees[i];
-        int couleur_interdite = 0;
-
-        // Logique pour déterminer la couleur interdite en fonction des contraintes d'exclusion
-        for (int j = 0; j < donnees->nombre_exclusions; j++) {
-            if (donnees->exclusions[j].exclusion[0] == op || donnees->exclusions[j].exclusion[1] == op) {
-                int autre_op;
-
-                if (donnees->exclusions[j].exclusion[0] == op) {
-                    autre_op = donnees->exclusions[j].exclusion[1];
-                } else {
-                    autre_op = donnees->exclusions[j].exclusion[0];
-                }
-                couleur_interdite = stations[autre_op];
-                break;
-            }
-        }
-
-        // Trouver la première couleur disponible
-        int couleur = 1;
-        while (couleur_presente(stations, couleur, donnees->nombre_operations) || couleur <= couleur_interdite) {
-            couleur++;
-        }
-
-        // Affectation de l'opération à la station
-        stations[op] = couleur;
-
-        // Affichage des résultats (à des fins de test)
-        printf("Opération %d : Station %d\n", op, couleur);
-    }
-
-    // Affichage du nombre total de stations
-    printf("Nombre total de stations : %d\n", couleur_presente(stations, 0, donnees->nombre_operations));
-
-    // Libération de la mémoire
-    free(operations_triees);
-    free(stations);
-}
 
 int main() {
     Donnees donnees = lire_donnees();

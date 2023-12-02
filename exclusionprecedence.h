@@ -27,6 +27,8 @@ typedef struct {
 
 t_donnees lire_donnees();
 void creer_graphe(t_donnees* donnees, int** graphe);
+void dfs(int** graphe, int sommet, int* visite, int nombre_operations, int* stations, int station_actuelle);
+
 
 
 
