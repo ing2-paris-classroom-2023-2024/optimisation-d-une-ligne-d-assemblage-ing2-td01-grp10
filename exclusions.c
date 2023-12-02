@@ -58,7 +58,7 @@ Graphe* CreerGraphe(int ordre)
 
 
 /* La construction du réseau peut se faire à partir d'un fichier dont le nom est passé en paramètre
-Le fichier contient : ordre, taille,orientation (0 ou 1)et liste des arcs */
+ */
 Graphe * lire_graphe(char * nomFichier)
 {
     Graphe* graphe;
@@ -77,7 +77,6 @@ Graphe * lire_graphe(char * nomFichier)
     while(fscanf(ifs,"%d %d",&s1,&s2)==2){
         taille++;
     }
-    printf("%d\n",taille);
     int** arcs = malloc(taille*sizeof(int*));
     fclose(ifs);
     FILE* f = fopen(nomFichier,"r");
@@ -100,8 +99,7 @@ Graphe * lire_graphe(char * nomFichier)
     graphe->taille=taille;
     // créer les arêtes du graphe
     for (int i=0; i<taille; ++i)
-    {   
-        printf("%d %d\n",arcs[i][0],arcs[i][1]);
+    { 
         graphe->pSommet=CreerArete(graphe->pSommet, arcs[i][0],arcs[i][1]);
         graphe->pSommet=CreerArete(graphe->pSommet, arcs[i][1],arcs[i][0]);
     }
@@ -131,11 +129,9 @@ void exclusion(Graphe* g){
                 continue;
             }
             if(psommet[i]->degre==0){
-                psommet[i]->couleur=couleur;
                 nb++;
             }
             while(psommet[i]->arc != NULL){
-                 printf("coucou\n");
                 if(g->pSommet[psommet[i]->arc->sommet]->couleur==couleur){
                     break;
                 }
@@ -147,18 +143,25 @@ void exclusion(Graphe* g){
             }
         }
         couleur++;
-    } 
+    }
+    for(int i = 1;i<couleur;i++){
+        printf("Station %d : \n",i);
+        for(int j=0;j<g->ordre;j++){
+            if(g->pSommet[j]->degre!=0 && g->pSommet[j]->couleur==i){
+                printf("Opération %d\n",j+1);
+            }
+        }
+        printf("\n");
+    }
 }
 
  ///bon courage ma life ca va le faire t un prince!!!! dans 2 ans on sera faire
 int main(){
     Graphe * g;
-
-    g = lire_graphe("exclusions.txt");
-    printf("test\n");
+    char nom_fichier[50];
+    printf("entrer le nom du fichier exclusions:");
+    gets(nom_fichier);
+    g = lire_graphe(nom_fichier);
     exclusion(g);
-    for(int i = 0;i<g->ordre;i++){
-        printf("%d %d\n",i,g->pSommet[i]->couleur);
-    }
     return 0;
 }

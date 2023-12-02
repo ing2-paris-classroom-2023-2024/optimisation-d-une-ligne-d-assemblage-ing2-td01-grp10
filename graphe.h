@@ -18,6 +18,7 @@ struct Sommet
     int valeur;
     int couleur;
     int degre;
+    int parent;
 };
 
 /* Alias de pointeur sur un Sommet */
