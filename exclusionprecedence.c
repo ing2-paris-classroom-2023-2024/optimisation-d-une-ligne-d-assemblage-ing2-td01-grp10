@@ -27,7 +27,7 @@ t_donnees lire_donnees() {
     fclose(exclusion);
 
     // Lecture du fichier precedence.txt
-    FILE *precedence = fopen("precedence.txt", "r");
+    FILE *precedence = fopen("precedences.txt", "r");
     if (!precedence) {
         perror("Erreur lors de l'ouverture du fichier precedence.txt");
         exit(EXIT_FAILURE);
