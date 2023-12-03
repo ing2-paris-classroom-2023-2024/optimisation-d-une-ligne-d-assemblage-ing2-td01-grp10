@@ -33,20 +33,6 @@ typedef struct Graphe
     pSommet* pSommet;
 } Graphe;
 
-// créer le graphe
-Graphe* CreerGraphe(int ordre);
 
-/* La construction du réseau peut se faire à partir d'un fichier dont le nom est passé en paramètre
-Le fichier contient : ordre, taille,orientation (0 ou 1)et liste des arcs */
-Graphe * lire_graphe(char * nomFichier);
-
-// Ajouter l'arête entre les sommets s1 et s2 du graphe
-pSommet* CreerArete(pSommet* sommet,int s1,int s2);
-
-/* affichage des successeurs du sommet num*/
-void afficher_successeurs(pSommet * sommet, int num);
-
-/*affichage du graphe avec les successeurs de chaque sommet */
-void graphe_afficher(Graphe* graphe);
 
 #endif

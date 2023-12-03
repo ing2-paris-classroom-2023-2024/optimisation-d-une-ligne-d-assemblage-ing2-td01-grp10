@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "precedencetemps.h"
 
-pSommet* CreerArete(pSommet* sommet,int s1,int s2)
+pSommet* CreerArete_prec(pSommet* sommet,int s1,int s2)
 {
     sommet[s2]->parent+=1;
     sommet[s1]->degre++;
@@ -42,7 +42,7 @@ pSommet* CreerArete(pSommet* sommet,int s1,int s2)
 }
 
 // créer le graphe
-Graphe* CreerGraphe(int ordre)
+Graphe* CreerGraphe_prec(int ordre)
 {
     Graphe * Newgraphe=(Graphe*)malloc(sizeof(Graphe));
     Newgraphe->pSommet = (pSommet*)malloc(ordre*sizeof(pSommet));
@@ -62,7 +62,7 @@ Graphe* CreerGraphe(int ordre)
 
 /* La construction du réseau peut se faire à partir d'un fichier dont le nom est passé en paramètre
  */
-Graphe * lire_graphe(char * nomFichier)
+Graphe * lire_graphe_oriente(char * nomFichier)
 {
     Graphe* graphe;
     FILE * ifs = fopen(nomFichier,"r");
@@ -96,14 +96,14 @@ Graphe * lire_graphe(char * nomFichier)
         }
     }
     ordre++;
-    graphe=CreerGraphe(ordre); // créer le graphe d'ordre sommets
+    graphe=CreerGraphe_prec(ordre); // créer le graphe d'ordre sommets
     graphe->orientation=1;
     graphe->ordre=ordre;
     graphe->taille=taille;
     // créer les arêtes du graphe
     for (int i=0; i<taille; ++i)
     { 
-        graphe->pSommet=CreerArete(graphe->pSommet, arcs[i][0],arcs[i][1]);
+        graphe->pSommet=CreerArete_prec(graphe->pSommet, arcs[i][0],arcs[i][1]);
     }
 
     return graphe;
@@ -193,15 +193,15 @@ void precedencetemps(Graphe* g, float* temps, float limite){
     }
 }
 
-int main(){
+void exec_prec(){
     Graphe * g;
     char nom_fichier[50];
     printf("entrer le nom du fichier precedence:");
-    gets(nom_fichier);
-    g = lire_graphe(nom_fichier);
+    scanf("%s",nom_fichier);
+    g = lire_graphe_oriente(nom_fichier);
     float* temps = malloc((g->ordre+1)*sizeof(float));
     printf("entrer le nom du fichier opérations:");
-    gets(nom_fichier);
+    scanf("%s",nom_fichier);
     FILE* f=fopen(nom_fichier,"r");
     int id;
     float time;
@@ -210,11 +210,10 @@ int main(){
     }
     fclose(f);
     printf("entrer le nom du fichier temps_cycle:");
-    gets(nom_fichier);
+    scanf("%s",nom_fichier);
     FILE* f2=fopen(nom_fichier,"r");
     float limite;
     fscanf(f,"%f",&limite);
     precedencetemps(g,temps,limite);
     
-    return 0;
 }

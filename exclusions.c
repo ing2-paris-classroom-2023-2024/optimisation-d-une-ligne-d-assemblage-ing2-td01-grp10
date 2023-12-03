@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "exclusions.h"
 
-pSommet* CreerArete(pSommet* sommet,int s1,int s2)
+pSommet* CreerArete_excl(pSommet* sommet,int s1,int s2)
 {
     sommet[s1]->degre++;
     if(sommet[s1]->arc==NULL)
@@ -40,7 +40,7 @@ pSommet* CreerArete(pSommet* sommet,int s1,int s2)
 }
 
 // créer le graphe
-Graphe* CreerGraphe(int ordre)
+Graphe* CreerGraphe_excl(int ordre)
 {
     Graphe * Newgraphe=(Graphe*)malloc(sizeof(Graphe));
     Newgraphe->pSommet = (pSommet*)malloc(ordre*sizeof(pSommet));
@@ -59,7 +59,7 @@ Graphe* CreerGraphe(int ordre)
 
 /* La construction du réseau peut se faire à partir d'un fichier dont le nom est passé en paramètre
  */
-Graphe * lire_graphe(char * nomFichier)
+Graphe * lire_graphe_non_oriente(char * nomFichier)
 {
     Graphe* graphe;
     FILE * ifs = fopen(nomFichier,"r");
@@ -93,15 +93,15 @@ Graphe * lire_graphe(char * nomFichier)
         }
     }
     ordre++;
-    graphe=CreerGraphe(ordre); // créer le graphe d'ordre sommets
+    graphe=CreerGraphe_excl(ordre); // créer le graphe d'ordre sommets
     graphe->orientation=0;
     graphe->ordre=ordre;
     graphe->taille=taille;
     // créer les arêtes du graphe
     for (int i=0; i<taille; ++i)
     { 
-        graphe->pSommet=CreerArete(graphe->pSommet, arcs[i][0],arcs[i][1]);
-        graphe->pSommet=CreerArete(graphe->pSommet, arcs[i][1],arcs[i][0]);
+        graphe->pSommet=CreerArete_excl(graphe->pSommet, arcs[i][0],arcs[i][1]);
+        graphe->pSommet=CreerArete_excl(graphe->pSommet, arcs[i][1],arcs[i][0]);
     }
 
     return graphe;
@@ -156,12 +156,11 @@ void exclusion(Graphe* g){
 }
 
  ///bon courage ma life ca va le faire t un prince!!!! dans 2 ans on sera faire
-int main(){
+void exec_excl(){
     Graphe * g;
     char nom_fichier[50];
     printf("entrer le nom du fichier exclusions:");
-    gets(nom_fichier);
-    g = lire_graphe(nom_fichier);
+    scanf("%s",nom_fichier);
+    g = lire_graphe_non_oriente(nom_fichier);
     exclusion(g);
-    return 0;
 }
