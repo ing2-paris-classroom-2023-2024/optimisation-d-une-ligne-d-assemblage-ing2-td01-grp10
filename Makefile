@@ -12,3 +12,6 @@ main.o : main.c
 
 exec : exclusions.o precedencetemps.o exclusionprecedence.o main.o
 	gcc -o exec exclusions.o precedencetemps.o main.o exclusionprecedence.o
+
+clear : *
+	rm *.o *.gch

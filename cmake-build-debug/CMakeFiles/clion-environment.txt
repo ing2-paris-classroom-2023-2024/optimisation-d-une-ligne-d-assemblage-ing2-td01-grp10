@@ -1,4 +1,3 @@
-ToolSet: 5.0 (local)@C:\Users\loryi\MinGW
-Options: 
+ToolSet: 1.0 (local)Options: 
 
-Options:-DCMAKE_MAKE_PROGRAM=C:/Users/loryi/OneDrive/Bureau/CLion 2022.2.1/bin/ninja/win/ninja.exe
+Options:

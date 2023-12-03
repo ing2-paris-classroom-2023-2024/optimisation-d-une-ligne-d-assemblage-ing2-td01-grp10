@@ -7,25 +7,18 @@
 t_donnees lire_donnees() {
     t_donnees donnees;
 
-    // Lecture du fichier exclusions.txt
-    FILE *exclusion = fopen("exclusions.txt", "r");
-    if (!exclusion) {
-        perror("Erreur lors de l'ouverture du fichier exclusions.txt");
-        exit(EXIT_FAILURE);
-    }
 
     // Lire les données depuis le fichier exclusions.txt
     FILE* fichier_exclusions = fopen("exclusions.txt", "r");
-    fscanf(fichier_exclusions, "%d", &donnees.nombre_exclusions);
 
-    donnees.exclusions = (t_exclusion*)malloc(sizeof(t_exclusion) * donnees.nombre_exclusions);
-    for (int i = 0; i < donnees.nombre_exclusions; i++) {
-        fscanf(fichier_exclusions, "%d %d", &donnees.exclusions[i].exclusion[0], &donnees.exclusions[i].exclusion[1]);
+    donnees.exclusions = (t_exclusion*)malloc(sizeof(t_exclusion));
+    int i = 0;
+    while(fscanf(fichier_exclusions, "%d %d", &donnees.exclusions[i].exclusion[0], &donnees.exclusions[i].exclusion[1])==2){
+        donnees.exclusions = realloc(donnees.exclusions, sizeof(t_exclusion)*i+1);
+        i++;
     }
+    donnees.nombre_exclusions=i-1;
     fclose(fichier_exclusions);
-
-    fclose(exclusion);
-
     // Lecture du fichier precedence.txt
     FILE *precedence = fopen("precedences.txt", "r");
     if (!precedence) {
@@ -35,14 +28,14 @@ t_donnees lire_donnees() {
 
     // Lire les données depuis le fichier precedences.txt
     FILE* fichier_precedences = fopen("precedences.txt", "r");
-    fscanf(fichier_precedences, "%d", &donnees.nombre_precedences);
-
-    donnees.precedences = (t_precedence*)malloc(sizeof(t_precedence) * donnees.nombre_precedences);
-    for (int i = 0; i < donnees.nombre_precedences; i++) {
-        fscanf(fichier_precedences, "%d %d", &donnees.precedences[i].precedences[0], &donnees.precedences[i].precedences[1]);
+    i=0;
+    donnees.precedences = (t_precedence*)malloc(sizeof(t_precedence));
+    while(fscanf(fichier_precedences, "%d %d", &donnees.precedences[i].precedences[0], &donnees.precedences[i].precedences[1])==2){
+        donnees.precedences=realloc(donnees.precedences,sizeof(t_precedence)*i+1);
+        i++;
     }
+    donnees.nombre_precedences=i-1;
     fclose(fichier_precedences);
-
     return donnees;
 }
 
@@ -120,25 +113,27 @@ void min_stations(t_donnees* donnees, int** graphe) {
 
 void exclprec(){
     t_donnees donnees = lire_donnees();
-
     // Création du graphe
     int** graphe = (int**)malloc(sizeof(int*) * donnees.nombre_operations);
     for (int i = 0; i < donnees.nombre_operations; i++) {
         graphe[i] = (int*)malloc(sizeof(int) * donnees.nombre_operations);
     }
+    printf("hi\n");
 
     creer_graphe(&donnees, graphe);
-
+    printf("hi\n");
     // Minimiser le nombre de stations
     min_stations(&donnees, graphe);
-
+    printf("hi\n");
      // Libération de la mémoire à la fin
      for (int i = 0; i < donnees.nombre_operations; i++) {
         free(graphe[i]);
      }
     free(graphe);
+    printf("hi\n");
 
     free(donnees.exclusions);
     free(donnees.precedences);
+    printf("hi\n");
 
 }
