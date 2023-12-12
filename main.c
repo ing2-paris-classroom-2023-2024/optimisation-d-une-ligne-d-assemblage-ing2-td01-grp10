@@ -3,6 +3,7 @@
 #include "exclusionprecedence.h"
 #include "exclusions.h"
 #include "precedencetemps.h"
+#include "exclusiontemps.h"
 
 
 
@@ -31,7 +32,7 @@ int main() {
                 exclprec();
                 break;
             case 4:
-
+                exec_excltps();
                 break;
             case 5:
                 return 0;
